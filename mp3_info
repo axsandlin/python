@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+#This is my first python script to read the id3 tags from mp3 files and export them to a JSON file.
+
+#Aubri Sandlin
+
+#Feb. 02, 2014
+
+import eyed3
+
+

@@ -1,0 +1,24 @@
+
+#!/usr/bin/python
+pyg = 'ay'
+
+#Get input from the user.
+original = raw_input('Enter a word:')
+
+#check to make sure the word is valid and not empty.
+if len(original) > 0 and original.isalpha():
+    word = original.lower()
+    first = word[0]
+#check to see if the fist letter is a vowel.
+    if (first == "a" or first == "e" or first == "i" or first == "o" or first == "u"):
+#if vowel, translation is equal to word with "ay" at the end.
+        new_word = word + pyg
+        print "Your word in pig latin is:", new_word
+#if not a vowel, put consonant at end of word and add "ay".
+    else:
+        word_end = word[1:]
+        new_word = word_end + word[0] + "ay"
+        print "Your word in pig latin is:", new_word
+#indicates no value was entered by the user
+else:
+    print 'empty'
