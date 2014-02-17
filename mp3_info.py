@@ -8,34 +8,32 @@
 
 #import eyed3
 
+#This import is to work with files and directories.
+
 import os
 
-dir = "/Volumes/music/unsorted"
+music_dir = "/Volumes/music/unsorted"
 
-music_list = os.listdir(dir)
+#method for determining if object in path passed in is a file or directory.
 
-f = open('/Users/axsandlin/workspaces/python/mp3_list','w')
+def fileOrDirectory(d):
 
-for x in music_list:
-   print x
-   f.write(x) 
+   f = open('/Users/axsandlin/workspaces/python/mp3_list','w')
 
-f.close()
+   my_list = os.listdir(d)
 
-
-# Assignment #1
-# Look up how to get dir contents. I think this requires a module.
-# use a for loop to print a list of files in this directory.
-
-#for d in dircontents:
-#   print d
-
-# Assignment #2
-# Use the system module to check if each is a file or a directory & display on the screen.
-
-
-# Assignment #3
-# use an if / else condition to append each directory to an array and display each file on the screen.
-
-
+   for x in my_list:
+         
+      if os.path.isfile(d + '/' + x):
+         print "File:", x
+         f.write(x + '\n') 
+      else:
+         print "Directory:", x
  
+   f.close()
+
+#call my method and pass it a directory.
+
+fileOrDirectory(music_dir)
+
+
