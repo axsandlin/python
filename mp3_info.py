@@ -12,44 +12,83 @@
 import os
 import json
 import eyeD3
-
-music_dir = "/Volumes/music/unsorted/Passion_Pit/Passion_Pit_-_Gossamer_mp3/"
-
-#method for determining if object in path passed in is a file or directory.
+#import JSON
+music_dir = "/Volumes/music/sorted/Styx"
 
 folders = {}
-def getEyeD3Info(d):
-   songs = []
+switch = 0
+
+def getEyeD3Info(d, songs):
+   #print("getEyeD3Info(" + d + ", songs)")
    music_list = os.listdir(d)
    
    type = ""
    json_string = ""
    json_txt = ""
+   dirsongs = []
    for x in music_list:  
-      if os.path.isfile(d + '/' + x):
-         if eyeD3.isMp3File(d + '/' + x):
-            
-            print d + '/' + x + " is mp3"
-            tag = eyeD3.Tag()
-            tag.link(d + '/' + x) 
-            song = {
-               'file_name': x, 
-               'artist' : tag.getArtist(), 
-               'album': tag.getAlbum(), 
-               'title': tag.getTitle(), 
-               'genre': str(tag.getGenre()), 
-               'track': tag.getTrackNum()
-            }
-            songs.append(song)
-   dir_data = {'folder': d, 'songs': songs}
-   return dir_data
+      # If you have time, put your recursion here. 
+      # if x is dir, call method. 
+      # If x is file, append to list.
+      file = d + '/' + x
+      #print file
+
+      if os.path.isdir(file):
+         #print file + " is dir"
+         songs.append(dict(folder=file, songs=getEyeD3Info(file, songs)))
+         print len(songs)
+      #   return songs.append(dir_data)
+      elif os.path.isfile(file):   
+         #print "---------------------"
+         #print file
+         #print "---------------------"
+         if eyeD3.isMp3File(file):
+            if not (x.startswith('.')):
+            # Look up Regular Expressions (regex).
+            # Put an if condition here which checks the name of the file (x) 
+            #    if it starts with a dot (.), do not do the tasks below (ignore the file).            
+               #print file + " is mp3"
+               tag = eyeD3.Tag()
+               tag.link(file) 
+               song = {
+                  'file_name': x, 
+                  'artist' : tag.getArtist(), 
+                  'album': tag.getAlbum(), 
+                  'title': tag.getTitle(), 
+                  'genre': str(tag.getGenre()), 
+                  'track': tag.getTrackNum()
+               }
+
+               dirsongs.append(song)
+               #print song
+   entry = {}
+   entry['folder'] = d
+   entry['songs'] = dirsongs
+   songs.append(entry)
+      #songs.update(dict(folder=file, songs=dirsongs))
+      #print "dirsongs = " + str(len(songs))
+               #print d
+   return songs
+      
+   
+  
    
 #call my method and pass it a directory.
-dir_eyed3_data = getEyeD3Info(music_dir)
 
-print json.dumps(dir_eyed3_data, sort_keys=True, indent=2, separators=(',', ': '))
-   
+songs = []
+dir_eyed3_data = getEyeD3Info(music_dir, songs)
 
+#print json.dumps(dir_eyed3_data, sort_keys=True, indent=2, separators=(',', ': '))
+#workspace_dir = os.getenv("WORKSPACE")   
+print(dir_eyed3_data)
+print "--------------------------"
+print(str(dir_eyed3_data))
+#JSON.stringify(dir_eyed3_data, null, 4);
+f = open("./output.json", "w")
+f.seek(0)
+f.write(str(dir_eyed3_data))
+f.close
+#f.write(json.dumps(dir_eyed3_data, sort_keys=True, indent=2, separators=(',', ': ')))
 
 #{  {
 #   folder: "/Volumes/music/unsorted",
