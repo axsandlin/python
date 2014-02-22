@@ -26,13 +26,9 @@ def getEyeD3Info(d, songs):
    json_string = ""
    json_txt = ""
    dirsongs = []
-   for x in music_list:  
-      # If you have time, put your recursion here. 
-      # if x is dir, call method. 
-      # If x is file, append to list.
-      file = d + '/' + x
-      #print file
-
+   
+   for x in music_list:
+      file = d + "/" + x
       if os.path.isdir(file):
          #print file + " is dir"
          songs.append(dict(folder=file, songs=getEyeD3Info(file, songs)))
@@ -120,6 +116,7 @@ f.close
 #         }
 #      },
 #   }
+#   {
 #   folder: "/Volumes/music/sorted",
 #   songs:
 #      {
@@ -148,6 +145,7 @@ f.close
 #            track: "10"
 #         }
 #      }
+#   }
 #}
    
       
