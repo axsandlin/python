@@ -11,7 +11,9 @@
 
 import os
 import json
-import eyeD3
+import eyeD
+from argparse import ArgumentParser3
+
 #import JSON
 music_dir = "/Volumes/music/sorted/Styx"
 

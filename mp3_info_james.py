@@ -12,10 +12,9 @@ import sys
 import os
 import json
 import eyeD3
-#import JSON
-music_dir = "/Users/axsandlin/Music"
-#music_dir = "/Volumes/music/unsorted"
+from argparse import ArgumentParser
 
+#import JSON
 
 def getEyeD3Info(current_dir, songs):
    
@@ -71,17 +70,19 @@ def getEyeD3Info(current_dir, songs):
    
    return to_return
    
-   
-   
-   
+parser = ArgumentParser(description="""***Get all resources required.""")
+parser.add_argument('--dir', help="The directory you want to scan", default="/Users/axsandlin/Music")
+args = parser.parse_args()
+
+if not os.path.isdir(args.dir):
+   print "Error: " + args.dir + "is not a directory"
    sys.exit(1)
-
-
-songs = {}
-songs["folder_name"] = music_dir
-dir_eyed3_data = getEyeD3Info(music_dir, songs)
-
-f = open("./output.json", "w")
-json.dump(dir_eyed3_data, f)
-f.close
+else:
+   songs = {}
+   songs["folder_name"] = args.dir
+   dir_eyed3_data = getEyeD3Info(args.dir, songs)
+   
+   f = open("./output.json", "w")
+   json.dump(dir_eyed3_data, f)
+   f.close
 
