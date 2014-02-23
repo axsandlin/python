@@ -81,8 +81,10 @@ print "--------------------------"
 print(str(dir_eyed3_data))
 #JSON.stringify(dir_eyed3_data, null, 4);
 f = open("./output.json", "w")
-f.seek(0)
-f.write(str(dir_eyed3_data))
+json.dump(dir_eyed3_data, f)
+
+#f.seek(0)
+#f.write(str(dir_eyed3_data))
 f.close
 #f.write(json.dumps(dir_eyed3_data, sort_keys=True, indent=2, separators=(',', ': ')))
 
