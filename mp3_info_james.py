@@ -54,17 +54,22 @@ def getEyeD3Info(current_dir, songs):
    # Create a collection of song dictionaries.
    subfolder_song_list = []
    for f in subfile_list:
-      tag = eyeD3.Tag()
-      tag.link(current_dir + "/" + f) 
-      song = {
-         "file_name": f, 
-         "artist" : tag.getArtist(), 
-         "album": tag.getAlbum(), 
-         "title": tag.getTitle(), 
-         "genre": str(tag.getGenre()), 
-         "track": tag.getTrackNum()
-      }
-
+      try:
+         tag = eyeD3.Tag()
+         tag.link(current_dir + "/" + f) 
+         song = {
+            "file_name": f, 
+            "artist" : tag.getArtist(), 
+            "album": tag.getAlbum(), 
+            "title": tag.getTitle(), 
+            "genre": str(tag.getGenre()), 
+            "track": tag.getTrackNum()
+         }
+      except:
+         print "This is the mp3 causing the error: " + (current_dir + "/" + f)
+         
+         
+      
       subfolder_song_list.append(song)
    to_return["songs"] = subfolder_song_list
    
