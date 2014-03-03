@@ -12,13 +12,16 @@ import sys
 import os
 import json
 import eyeD3
+import logging
+from objects import MP3
 from argparse import ArgumentParser
 
 #import JSON
 
-def getEyeD3Info(current_dir, songs):
+def getEyeD3Info(current_dir, songs, logging):
    
-   print("getEyeD3Info(" + current_dir + ", songs)")
+   logging.debug("getEyeD3Info(" + current_dir + ", songs)")
+   
    dir_contents = os.listdir(current_dir)
    
    to_return = {}
@@ -47,47 +50,62 @@ def getEyeD3Info(current_dir, songs):
    for d in subfolder_list:
       folder = {
          "folder_name": d,
-         "contents": getEyeD3Info(d, songs)
+         "contents": getEyeD3Info(d, songs, logging)
       }
       to_return["folders"].append(folder)  
 
    # Create a collection of song dictionaries.
+   
    subfolder_song_list = []
+   
+      
    for f in subfile_list:
+      
+      my_mp3 = MP3.MP3(current_dir + "/" + f, logging)
+      
       try:
-         tag = eyeD3.Tag()
-         tag.link(current_dir + "/" + f) 
+         my_mp3.getTagInfo()
+         my_mp3.log_object_info()
+
          song = {
             "file_name": f, 
-            "artist" : tag.getArtist(), 
-            "album": tag.getAlbum(), 
-            "title": tag.getTitle(), 
-            "genre": str(tag.getGenre()), 
-            "track": tag.getTrackNum()
+            "artist" : my_mp3.artist, 
+            "album": my_mp3.album, 
+            "title": my_mp3.title, 
+            "genre": my_mp3.genre, 
+            "track": my_mp3.track_num
          }
-      except:
-         print "This is the mp3 causing the error: " + (current_dir + "/" + f)
          
-         
+         subfolder_song_list.append(song)
       
-      subfolder_song_list.append(song)
+      except Exception, e:
+         logging.exception ("This is the mp3 causing the error: " + (current_dir + "/" + f))
+         logging.exception(e)
+         
+         
    to_return["songs"] = subfolder_song_list
    
    return to_return
-   
+##############################################
+# END OF METHOD DEF. START EXECUTION
+##############################################
+
+logging.basicConfig(level=logging.DEBUG)
+
 parser = ArgumentParser(description="""***Get all resources required.""")
 parser.add_argument('--dir', help="The directory you want to scan", default="/Users/axsandlin/Music")
 args = parser.parse_args()
 
 if not os.path.isdir(args.dir):
-   print "Error: " + args.dir + "is not a directory"
+   print "Error: " + args.dir + " is not a directory"
    sys.exit(1)
 else:
    songs = {}
    songs["folder_name"] = args.dir
-   dir_eyed3_data = getEyeD3Info(args.dir, songs)
+   dir_eyed3_data = getEyeD3Info(args.dir, songs, logging)
    
    f = open("./output.json", "w")
    json.dump(dir_eyed3_data, f)
    f.close
 
+  
