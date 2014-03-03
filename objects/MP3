@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+#Aubri Sandlin
+
+#Feb. 25, 2014
+
+#This is a MP3 objects.
+
+import eyeD3
+
+class MP3:
+  
+   
+   def getTagInfo(dir):
+      self.tag = eyeD3.Tag()
+      tag.link(dir) 
+      self.artist = tag.getArtist(), 
+      self.album = tag.getAlbum(), 
+      self.title = tag.getTitle(), 
+      self.genre = str(tag.getGenre()), 
+      self.track_num = tag.getTrackNum()
+   
+      
+   return self
