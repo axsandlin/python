@@ -7,10 +7,12 @@
 #This is a MP3 objects.
 
 import eyeD3
+from mutagen.easyid3 import EasyID3
+from mutagen.mp3 import MP3
 import logging
 import json
 
-class MP3:
+class MP3Data:
    
    artist = None
    album = None
@@ -29,9 +31,20 @@ class MP3:
       return None
    
    
-   def getTagInfo(self):
+   def get_tag_info_eyeD3(self):
       
-   
+      
+      mp3info = EasyID3(self.filepath)
+      print "***********************************************"  
+      print mp3info.items()
+      
+        
+      audio = MP3(self.filepath) 
+      dir(audio) 
+      
+      
+      
+      
       tag = eyeD3.Tag()
       tag.link(self.filepath) 
       self.artist = tag.getArtist(), 

@@ -12,8 +12,9 @@ import sys
 import os
 import json
 import eyeD3
+from mutagen.easyid3 import EasyID3
 import logging
-from objects import MP3
+from objects import MP3Data
 from argparse import ArgumentParser
 
 #import JSON
@@ -61,10 +62,10 @@ def getEyeD3Info(current_dir, songs, logging):
       
    for f in subfile_list:
       
-      my_mp3 = MP3.MP3(current_dir + "/" + f, logging)
+      my_mp3 = MP3Data.MP3Data(current_dir + "/" + f, logging)
       
       try:
-         my_mp3.getTagInfo()
+         my_mp3.get_tag_info_eyeD3()
          my_mp3.log_object_info()
 
          song = {
