@@ -66,6 +66,7 @@ def getEyeD3Info(current_dir, songs, logging):
       
       try:
          my_mp3.get_tag_info_eyeD3()
+         my_mp3.get_tag_info_mutagen()
          my_mp3.log_object_info()
 
          song = {
