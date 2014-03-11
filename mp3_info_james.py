@@ -21,6 +21,7 @@ from argparse import ArgumentParser
 
 def getEyeD3Info(current_dir, songs, logging):
    
+   
    logging.debug("getEyeD3Info(" + current_dir + ", songs)")
    
    dir_contents = os.listdir(current_dir)
@@ -94,9 +95,14 @@ def getEyeD3Info(current_dir, songs, logging):
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 parser = ArgumentParser(description="""***Get all resources required.""")
 parser.add_argument('--dir', help="The directory you want to scan", default="/Users/axsandlin/Music")
 args = parser.parse_args()
+
+d = None
+my_mp3_gn = MP3Data.MP3Data(d, logging)
+#my_mp3_gn.get_userid_from_gracenote()
 
 if not os.path.isdir(args.dir):
    print "Error: " + args.dir + " is not a directory"
